@@ -1,5 +1,29 @@
+# Python cache
+__pycache__/
+*.py[cod]
 
+# Virtual environment
+venv/
+ENV/
+env/
+.env/
 
+# VSCode settings
 .vscode/
 
-C:\Users\DELL\Desktop\SHaHD\3th_first term\Data_Compression\Assignments\Assign_1\.vscode
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python compiled files
+*.pyo
+*.pyd
+
+# Backup files
+*~
