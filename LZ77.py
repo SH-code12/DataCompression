@@ -9,7 +9,7 @@ def Compress(data):
         still_max_search = min(current_pointer+ look_ahead_window_length,len(data))
         counter =0
         max_match =0
-        I_go_backed_for =0;
+        I_go_backed_for = 0
         next_char = data[current_pointer]
         temp_pointer = current_pointer
         while(back_pointer<temp_pointer and current_pointer<still_max_search):
@@ -47,17 +47,19 @@ def Decompress_LZ77(Compress_LZ77):
         
         # ' ' to print characters with space 
         
-    return ' '.join(Decompress_Data)
+    return ''.join(Decompress_Data)
 
 
-# compressed_data = [(0, 0, 'A'), (0, 0, 'B'), (2, 1, 'A'), (3, 2, 'B'), (5, 3, 'B'), (2, 2, 'B'), (5, 5, 'B'), (1 ,1 , 'A')]
-# decompressed = Decompress_LZ77(compressed_data)
-# print("Decompressed Data Using LZ77 Technique:", decompressed)
+compressed_data = [(0, 0, 'A'), (0, 0, 'B'), (2, 1, 'A'), (3, 2, 'B'), (5, 3, 'B'), (2, 2, 'B'), (5, 5, 'B'), (1 ,1 , 'A')]
+TestSpace = [(0, 0, 's'), (0, 0, 'h'), (0, 0, 'a'), (2, 1, 'd'), (0, 0, ' '), (0, 0, 'm'), (0, 0, 'o'), (5, 1, 'a'),(4, 1, 'e'), (8, 1, '')]
+
+decompressed = Decompress_LZ77(TestSpace)
+print("Decompressed Data Using LZ77 Technique:", decompressed)
 
 
-Mytext = "ABBBBAB"
-mycode = Compress(Mytext)
-for code3 in mycode:
-    print(code3)
+# Mytext = "ABBBBAB"
+# mycode = Compress(Mytext)
+# for code3 in mycode:
+#     print(code3)
 
 
