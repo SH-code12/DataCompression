@@ -15,7 +15,7 @@ def Compress(data):
         for j in range(backPointer, currPointer):
             match = 0
             while (currPointer + match < currMaxSearch and 
-                   data[j + match] == data[currPointer + match]):
+                data[j + match] == data[currPointer + match]):
                 match += 1
 
             if match > maxMatch:
@@ -61,12 +61,9 @@ def Decompress_LZ77(Compress_LZ77):
 #decompressed = Decompress_LZ77(TestSpace)
 #print("Decompressed Data Using LZ77 Technique:", decompressed)
 
-
-# Mytext = "ABBBBAB"
-# mycode = Compress(Mytext)
-# for code3 in mycode:
-#     print(code3)
-data = "AsmaaAtef Omran"
+print("Enter text to copress and Decompress it: ")
+data = input()
+# data = "AsmaaAtef Omran"
 compressed_data = Compress(data)
 print("Compressed Data:", compressed_data)
 
