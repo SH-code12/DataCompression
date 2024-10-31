@@ -47,8 +47,9 @@ def Decompress_LZ77(Compress_LZ77):
             
             Decompress_Data += Decompress_Data[startIndex : startIndex + length]
                         
+        if nextSymbol:
         # Add char direct if position = 0
-        Decompress_Data += nextSymbol
+            Decompress_Data += nextSymbol
         
         # ' ' to print characters with space 
         
