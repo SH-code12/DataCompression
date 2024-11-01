@@ -29,12 +29,45 @@ def Compress_LZW(data):
         
     return compressedData
     
+# Function to deal with files only
+def copressWithFile(inputFile,outputFile):
     
+    # Read data from input file
+    file = open(inputFile ,'r')
+    data = file.read()
+    file.close()
+    
+    compressed_data = Compress_LZW(data)
+    
+    # write compressed data in output file
+    
+    file = open(outputFile , 'w')
+    file.write(str(compressed_data))
+    file.close()
+    
+    print("Compressed Data Save at " + outputFile)
+    
+
+
 def Decompress_LZW(data):
     print("Decompressed Data : not added yet")
     
+#  Testing without Files 
 print("Test Function Compressed LZW techniques ^_^")
 testData = input("Enter data to compressed it: ")
-print(Compress_LZW(testData))
+compressedDtata = Compress_LZW(testData)
+print("Compressed Data: " ,compressedDtata)
+
+# print("Test Function Decompressed LZW techniques ^_^")
+# decompressedDtata = Decompress_LZW(compressedDtata)
+# print("Decompressed Data: " ,decompressedDtata)
+
+# with Files 
+
+testInput = input("Enter Name of input File: ")
+testOutput = input("Enter Name of output File: ")
+copressWithFile(testInput , testOutput)
+
+
 
     
