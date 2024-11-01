@@ -1,8 +1,5 @@
 print("Shahd Elnassag ^_^")
 
-
-
-# Will Add Soon God Willing
 def Compress_LZW(data):
     # table store ascii and another new chars 
     dictinary_table = {}
