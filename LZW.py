@@ -47,24 +47,51 @@ def copressWithFile(inputFile,outputFile):
 
 
 def Decompress_LZW(data):
-    print("Decompressed Data : not added yet")
+    text =""
+    start = 256
+    start_encode =0
+    dictionary ={}
+    for i in range(0,len(data)):
+        num = data[i]
+        if num< 256:
+            text += chr(num)
+            if (i>0):
+                dictionary[start] = str (text[start_encode:])
+                start_encode = len(text)-1;
+                start+=1
+        elif num >=start:
+            s =text[start_encode:] + text[start_encode]
+            text +=  s
+            dictionary[start] = str(s)
+            start_encode = len(text)-(len(s))
+            start+=1
+        else:
+            s = text[start_encode:]
+            text += str(dictionary[num])
+            dictionary[start]=  s + dictionary[num][0]
+            start_encode = len(text) -(len(dictionary[num]) )
+            start+=1
+    return text
     
-#  Testing without Files 
+ #Testing without Files
 print("Test Function Compressed LZW techniques ^_^")
 testData = input("Enter data to compressed it: ")
 compressedDtata = Compress_LZW(testData)
 print("Compressed Data: " ,compressedDtata)
 
-# print("Test Function Decompressed LZW techniques ^_^")
-# decompressedDtata = Decompress_LZW(compressedDtata)
-# print("Decompressed Data: " ,decompressedDtata)
+print("Test Function Decompressed LZW techniques ^_^")
 
-# with Files 
+decompressedDtata = Decompress_LZW(compressedDtata)
+print("Decompressed Data: " ,decompressedDtata)
 
-testInput = input("Enter Name of input File: ")
-testOutput = input("Enter Name of output File: ")
-copressWithFile(testInput , testOutput)
+# with Files
+
+if(decompressedDtata == testData):
+    print("GOOD JOBBB ya maloka")
+# testInput = input("Enter Name of input File: ")
+# testOutput = input("Enter Name of output File: ")
+# copressWithFile(testInput , testOutput)
 
 
 
-    
+
