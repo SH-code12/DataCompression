@@ -27,7 +27,7 @@ def Compress_LZW(data):
     return compressedData
     
 # Function to deal with files only
-def copressWithFile(inputFile,outputFile):
+def compressWithFile(inputFile,outputFile):
     
     # Read data from input file
     file = open(inputFile ,'r')
@@ -72,8 +72,28 @@ def Decompress_LZW(data):
             start_encode = len(text) -(len(dictionary[num]) )
             start+=1
     return text
+# Deal with Files
+def DecompressWithFile(inputFile,outputFile):
     
- #Testing without Files
+    # Read data from input file
+    file = open(inputFile ,'r')
+    data = file.read()
+    file.close()
+    
+    # convert string to integer
+    data = eval(data)
+    
+    decompressed_data = Decompress_LZW(data)
+    
+    # write compressed data in output file
+    
+    file = open(outputFile , 'w')
+    file.write(str(decompressed_data))
+    file.close()
+    
+    print("Decompressed Data Save at " + outputFile)
+    
+#Testing without Files
 print("Test Function Compressed LZW techniques ^_^")
 testData = input("Enter data to compressed it: ")
 compressedDtata = Compress_LZW(testData)
@@ -84,13 +104,18 @@ print("Test Function Decompressed LZW techniques ^_^")
 decompressedDtata = Decompress_LZW(compressedDtata)
 print("Decompressed Data: " ,decompressedDtata)
 
-# with Files
-
 if(decompressedDtata == testData):
     print("GOOD JOBBB ya maloka")
-# testInput = input("Enter Name of input File: ")
-# testOutput = input("Enter Name of output File: ")
-# copressWithFile(testInput , testOutput)
+
+# with Files
+
+testInput = input("Enter Name of input File: ")
+outputCompress = input("Enter Name of output of Compressed Data File: ")
+outputDecompress = input("Enter Name of output of Compressed Data File: ")
+compressWithFile(testInput , outputCompress)
+DecompressWithFile(outputCompress,outputDecompress)
+
+
 
 
 
