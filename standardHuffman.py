@@ -115,9 +115,6 @@ def DecompressWithFile(inputFile,outputFile, codes):
     data = file.read()
     file.close()
     
-    # convert string to integer
-    # data = eval(data)
-    
     decompressed_data = decompress(data , codes)
     
     # write compressed data in output file
@@ -129,8 +126,11 @@ def DecompressWithFile(inputFile,outputFile, codes):
     print("Decompressed Data Save at " + outputFile)
 
 
-# without Files
-data = "bbbacacbcd"
+# Testing  without Files
+# print("Enter a text to compress: ")
+data = input("Enter a text to compress: ")
+
+# data = "bbbacacbcd"
 
 probabilities = calculate_probabilities(data)
 print("Character Probabilities:")
