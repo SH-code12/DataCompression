@@ -71,6 +71,23 @@ def compress(data, codes):
         compressed_data += codes[char]
     return compressed_data
 
+def compressWithFile(inputFile,outputFile, codes):
+    
+    # Read data from input file
+    file = open(inputFile ,'r')
+    data = file.read()
+    file.close()
+    
+    compressed_data = compress(data, codes)
+    
+    # write compressed data in output file
+    
+    file = open(outputFile , 'w')
+    file.write(str(compressed_data))
+    file.close()
+    
+    print("Compressed Data Save at " + outputFile)
+
 
 # Decompress the data
 def decompress(compressed_text, codes):
@@ -91,7 +108,28 @@ def decompress(compressed_text, codes):
 
     return original_text
 
+def DecompressWithFile(inputFile,outputFile, codes):
+    
+    # Read data from input file
+    file = open(inputFile ,'r')
+    data = file.read()
+    file.close()
+    
+    # convert string to integer
+    # data = eval(data)
+    
+    decompressed_data = decompress(data , codes)
+    
+    # write compressed data in output file
+    
+    file = open(outputFile , 'w')
+    file.write(str(decompressed_data))
+    file.close()
+    
+    print("Decompressed Data Save at " + outputFile)
 
+
+# without Files
 data = "bbbacacbcd"
 
 probabilities = calculate_probabilities(data)
@@ -111,3 +149,12 @@ print(f"\nCompressed Data: {compressed_data}")
 
 decompressed_data = decompress(compressed_data, huffman_codes)
 print(f"Decompressed Data: {decompressed_data}")
+
+# Testing With files
+
+
+testInput = input("Enter Name of input File: ")
+outputCompress = input("Enter Name of output of Compressed Data File: ")
+outputDecompress = input("Enter Name of output of Decompressed Data File: ")
+compressWithFile(testInput , outputCompress,huffman_codes)
+DecompressWithFile(outputCompress,outputDecompress,huffman_codes)
