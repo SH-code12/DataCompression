@@ -6,7 +6,7 @@
 
    2. Decoressed Data  
 
-   - Implementation For LZW Technique
+- Implementation For LZW Technique
 
    1. Compressed Data
 
@@ -14,7 +14,7 @@
 
    3. Deal with files (input,output)
 
-   - Implementation For Standard Huffman Technique
+- Implementation For Standard Huffman coding Technique
 
    1. Compressed Data
 
