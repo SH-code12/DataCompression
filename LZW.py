@@ -57,7 +57,7 @@ def Decompress_LZW(data):
             text += chr(num)
             if (i>0):
                 dictionary[start] = str (text[start_encode:])
-                start_encode = len(text)-1;
+                start_encode = len(text)-1
                 start+=1
         elif num >=start:
             s =text[start_encode:] + text[start_encode]
@@ -111,7 +111,7 @@ if(decompressedDtata == testData):
 
 testInput = input("Enter Name of input File: ")
 outputCompress = input("Enter Name of output of Compressed Data File: ")
-outputDecompress = input("Enter Name of output of Compressed Data File: ")
+outputDecompress = input("Enter Name of output of Decompressed Data File: ")
 compressWithFile(testInput , outputCompress)
 DecompressWithFile(outputCompress,outputDecompress)
 
