@@ -71,35 +71,48 @@ def Compress(data, codes):
 
 
 # Decompress function using the Huffman codes
-def Decompress(compData, codes):
-    nwcodes = reverseMap(codes)
+def Decompress(binary_data, codes):
+    reverse_codes = {v: k for k, v in codes.items()}  # Reverse mapping
+    current_bits = ""
+    decompressed_text = ""
 
-    curr = ""
-    ret = ""
-    start = 0
-    while start < len(compData):
-        curr += compData[start]
-        if curr in nwcodes:
-            ret += nwcodes[curr]
-            curr = ""
-        start += 1
-    return ret
+    for bit in binary_data:
+        current_bits += bit
+        if current_bits in reverse_codes:
+            decompressed_text += reverse_codes[current_bits]
+            current_bits = ""
+
+    return decompressed_text
+
 
 # Convert binary to bytes 
 
 def binary_to_bytes(binary_string):
+    # Calculate padding
+    padding_length = (8 - len(binary_string) % 8) % 8
+    binary_string += '0' * padding_length
+
+    # Convert to bytes
     byte_list = []
     for i in range(0, len(binary_string), 8):
         byte = binary_string[i:i+8]
-        byte_int = int(byte, 2)
-        byte_list.append(byte_int)
+        byte_list.append(int(byte, 2))
 
+    # Append the padding length as the last byte
+    byte_list.append(padding_length)
     return bytes(byte_list)
+
 
 
 # Convert bytes back to a binary string
 def bytes_to_binary(byte_data):
-    return ''.join(f"{byte:08b}" for byte in byte_data)
+    # Extract padding length from the last byte
+    padding_length = byte_data[-1]
+    binary_string = ''.join(f"{byte:08b}" for byte in byte_data[:-1])
+
+    # Remove padding
+    return binary_string[:-padding_length] if padding_length > 0 else binary_string
+
 
 
 def compress_file(input_file, compressed_file, codes_file):
@@ -111,24 +124,23 @@ def compress_file(input_file, compressed_file, codes_file):
     huffman_codes = get_codes(huffman_root)
     compressed_data = Compress(data, huffman_codes)
 
-    # Save compressed data to binary file
+    # Save compressed data with padding
     with open(compressed_file, 'wb') as bin_file:
         bin_file.write(binary_to_bytes(compressed_data))
 
-    # Save Huffman codes to a text file
+    # Save Huffman codes
     with open(codes_file, 'w') as codes_outfile:
         for char, code in huffman_codes.items():
             char_representation = 'SPACE' if char == ' ' else char
             codes_outfile.write(f"{char_representation}:{code}\n")
 
-
 # Decompress function for files
 def decompress_file(compressed_file, codes_file, output_file):
-    # Step 1: Read compressed binary data from .bin file
+    # Read compressed binary data and remove padding
     with open(compressed_file, 'rb') as bin_file:
         compressed_data = bytes_to_binary(bin_file.read())
 
-    # Step 2: Read Huffman codes from the text file
+    # Read Huffman codes
     codes = {}
     with open(codes_file, 'r') as codes_infile:
         for line in codes_infile:
@@ -136,10 +148,10 @@ def decompress_file(compressed_file, codes_file, output_file):
             char = ' ' if char == 'SPACE' else char
             codes[char] = code
 
-    # Step 3: Decompress the binary data using the Huffman codes
+    # Decompress data
     decompressed_data = Decompress(compressed_data, codes)
 
-    # Step 4: Write the decompressed data to a .txt file
+    # Write decompressed data to file
     with open(output_file, 'w') as outfile:
         outfile.write(decompressed_data)
 
@@ -147,12 +159,12 @@ def decompress_file(compressed_file, codes_file, output_file):
 
 
 # Test for file operations
-def test_file_operations():
+def file_operations():
     input_filename = 'test_input.txt'
     compressed_filename = 'test_compressed.bin'  
     codes_filename = 'test_codes.txt'
     decompressed_filename = 'test_decompressed.txt'
-    test_data = "asmaa atef without file"
+    test_data = input("Enter Data: ")
 
     # Write test data to the input file
     with open(input_filename, 'w') as infile:
@@ -182,7 +194,7 @@ def test_file_operations():
     print("Decompressed Data:", decompressed_data)
 
 # Test for in-memory operations
-def test_logic():
+def logic():
     test_data = input("Please the text ypu want : ")
     freq = calc_freq(test_data)
     huffman_root = buildHuffman(freq)
@@ -198,5 +210,5 @@ def test_logic():
 
 
 # Run tests
-test_logic()
-test_file_operations()
+# logic()
+file_operations()
