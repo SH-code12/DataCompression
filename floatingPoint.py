@@ -1,3 +1,5 @@
+import struct
+
 print("Shahd Elnassag ^_^")
 
 def getProbabilities(data):
@@ -81,4 +83,30 @@ def runAlgorithm():
 
     print("Compressed Data:", compressedData)
 
-runAlgorithm()
+# runAlgorithm()
+
+def runOnfiles():
+    input_filename = 'Floatinput.txt'
+    compressed_filename = 'Floatinput.bin'
+
+    file1 = open(input_filename,"r+")
+    data = file1.read().strip()
+    print(data)
+    probablity = getProbabilities(data)
+    compressedData =  compressFloatingPoint(data, probablity)
+    print(compressedData)
+    # successful writing to binary
+    writeTofile = open(compressed_filename,"wb")
+    writeTofile.write(struct.pack('d',compressedData))
+    writeTofile.close()
+    # succesful reading from binary file
+
+    print("succesful")
+    readfromBinary = open(compressed_filename,"rb")
+    print(struct.unpack('d',readfromBinary.read(8))[0])
+    # here pass the converted double from binary to decompression
+
+
+
+runOnfiles()
+
