@@ -70,6 +70,32 @@ def compressFloatingPoint(data , probabilities):
     
     return compressedData
 
+def decompressFloatingPoint(Code,probabilities,length):
+    ranges = calculateRange(probabilities)
+
+    lower = 0.0
+    upper = 1.0
+    decompressedData=""
+    for _ in range(length):
+        rangeW = upper - lower
+        #scale the target value based on the current range
+        target = (Code - lower) / rangeW
+        #check target value
+
+        for symbol, (low, high) in ranges.items():
+            if low <= target < high:
+                # check target value in the correct range
+                print(f"target: {target}, Lower: {low:.4f}, Upper: {high:.4f} , symbol: {symbol}")
+                decompressedData += symbol
+               #update
+                upper = lower + rangeW * high
+                lower = lower + rangeW * low
+                break
+
+    return decompressedData
+
+
+
 # Testing Function
 
 def runAlgorithm():
@@ -83,7 +109,9 @@ def runAlgorithm():
 
     print("Compressed Data:", compressedData)
 
-# runAlgorithm()
+    decompressedData = decompressFloatingPoint(compressedData, probabilities, len(inputData))
+
+    print("Decompressed Data", decompressedData)
 
 def runOnfiles():
     input_filename = 'Floatinput.txt'
@@ -91,7 +119,7 @@ def runOnfiles():
 
     file1 = open(input_filename,"r+")
     data = file1.read().strip()
-    print(data)
+    print("orignal data: ",data)
     probablity = getProbabilities(data)
     compressedData =  compressFloatingPoint(data, probablity)
     print(compressedData)
@@ -108,5 +136,6 @@ def runOnfiles():
 
 
 
-runOnfiles()
+#runOnfiles()
+runAlgorithm()
 
