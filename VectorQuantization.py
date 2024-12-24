@@ -1,6 +1,7 @@
 import numpy as np
 
 from PIL import Image
+from sklearn.cluster import KMeans
 
 
 print("Shahd Elnassag ^_^")
@@ -39,6 +40,12 @@ def divideToVectors(image, vectorSize):
                 vectors.append(vector.flatten())
     return np.array(vectors)
 
+# Function to generate Codebook
+def generateCodebook(vectors, numOfClusters):
+    codebook = KMeans(n_clusters =numOfClusters, random_state=0)
+    codebook.fit(vectors)
+    return codebook
+
 
 
 
@@ -62,6 +69,12 @@ vectorSize = 4
 vectors = divideToVectors(image, vectorSize)
 
 print(f"Image divided into {len(vectors)} vectors of size {vectorSize}x{vectorSize}")
+
+# Generate codebook
+
+numOfClusters = 16  
+codebook_g = generateCodebook(vectors, numOfClusters)
+print(f"Codebook generated with {numOfClusters} clusters.")
 
     # Save the image
 
