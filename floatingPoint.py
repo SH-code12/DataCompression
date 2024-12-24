@@ -70,6 +70,32 @@ def compressFloatingPoint(data , probabilities):
     
     return compressedData
 
+def decompressFloatingPoint(Code,probabilities,length):
+    ranges = calculateRange(probabilities)
+
+    lower = 0.0
+    upper = 1.0
+    decompressedData=""
+    for _ in range(length):
+        rangeW = upper - lower
+        #scale the target value based on the current range
+        target = (Code - lower) / rangeW
+        #check target value
+
+        for symbol, (low, high) in ranges.items():
+            if low <= target < high:
+                # check target value in the correct range
+                print(f"target: {target}, Lower: {low:.4f}, Upper: {high:.4f} , symbol: {symbol}")
+                decompressedData += symbol
+               #update
+                upper = lower + rangeW * high
+                lower = lower + rangeW * low
+                break
+
+    return decompressedData
+
+
+
 # Testing Function
 
 def runAlgorithm():
@@ -83,7 +109,9 @@ def runAlgorithm():
 
     print("Compressed Data:", compressedData)
 
-# runAlgorithm()
+    decompressedData = decompressFloatingPoint(compressedData, probabilities, len(inputData))
+
+    print("Decompressed Data", decompressedData)
 
 def runOnfiles():
     input_filename = 'Floatinput.txt'
@@ -91,22 +119,60 @@ def runOnfiles():
 
     file1 = open(input_filename,"r+")
     data = file1.read().strip()
-    print(data)
+    print("orignal data: ",data)
     probablity = getProbabilities(data)
     compressedData =  compressFloatingPoint(data, probablity)
-    print(compressedData)
-    # successful writing to binary
-    writeTofile = open(compressed_filename,"wb")
-    writeTofile.write(struct.pack('d',compressedData))
-    writeTofile.close()
-    # succesful reading from binary file
+    print("compressed Data: ",compressedData)
 
-    print("succesful")
-    readfromBinary = open(compressed_filename,"rb")
-    print(struct.unpack('d',readfromBinary.read(8))[0])
-    # here pass the converted double from binary to decompression
+    unique_elements = len(probablity)
+    with open(compressed_filename, "wb") as writeTofile:
+        # store the length and the unique data
+        writeTofile.write(struct.pack('I', len(data)))
+        writeTofile.write(struct.pack('I', unique_elements))
+        # store the probabilities
+        for symbol, prob in probablity.items():
+            writeTofile.write(struct.pack('c', symbol.encode('utf-8')))
+            writeTofile.write(struct.pack('d', prob))
+
+        # store the compressed floating-point data
+        writeTofile.write(struct.pack('d', compressedData))
+
+    print("Data successfully written to:", compressed_filename)
+    # successful writing to binary
+
+# decompress from a file
+    with open(compressed_filename, "rb") as readfromBinary:
+        # Read the length of the data
+        data_length = struct.unpack('I', readfromBinary.read(4))[0]
+        print("Decoded Data Length:", data_length)
+
+        # Read the number of unique elements
+        unique_elements_read = struct.unpack('I', readfromBinary.read(4))[0]
+        print("Decoded Number of Unique Elements:", unique_elements_read)
+
+        # Read the probabilities
+        decoded_probabilities = {}
+        for _ in range(unique_elements_read):  # Loop for the number of unique symbols
+            symbol = struct.unpack('c', readfromBinary.read(1))[0].decode('utf-8')
+            prob = struct.unpack('d', readfromBinary.read(8))[0]
+            decoded_probabilities[symbol] = prob
+        print("Decoded Probabilities:", decoded_probabilities)
+
+        # Read the compressed floating-point data
+        compressed_value = struct.unpack('d', readfromBinary.read(8))[0]
+        print("Decoded Compressed Value:", compressed_value)
+
+        # Decompress and validate
+        decompressedData = decompressFloatingPoint(compressed_value, decoded_probabilities, data_length)
+        print("Decompressed Data:", decompressedData)
+
+        if decompressedData == data:
+            print("Decompression successful!")
+        else:
+            print("Decompression failed!")
 
 
 
 runOnfiles()
+#runAlgorithm()
 
