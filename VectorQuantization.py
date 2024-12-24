@@ -2,8 +2,6 @@ import numpy as np
 
 from PIL import Image
 
-from sklearn.cluster import KMeans  # Corrected typo
-
 
 print("Shahd Elnassag ^_^")
 
