@@ -3,7 +3,6 @@ import numpy as np
 from PIL import Image
 from sklearn.cluster import KMeans
 
-
 print("Shahd Elnassag ^_^")
 
 
@@ -79,6 +78,11 @@ print(f"Codebook generated with {numOfClusters} clusters.")
     # Save the image
 
 saveImage(image, output_image_path)
+
+
+#def decompression():
+
+
 
 
 

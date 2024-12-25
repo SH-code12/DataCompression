@@ -3,57 +3,55 @@ import struct
 print("Shahd Elnassag ^_^")
 
 def getProbabilities(data):
-    
-    uniqueSymbol = sorted(set(data))
-    
-    total_prob = 0.0
-    
+    """
+    Calculate probabilities of each symbol in the input data based on frequency.
+    """
+    total_symbols = len(data)
     probabilities = {}
-    
-    for symbol in uniqueSymbol:
-        while True:
-            probability = float(input("Enter the probability for symbol: " + symbol + ": ").strip())
-            
-            if probability < 0 or probability > 1:
-                print("probability must be betwwen 0 and 1, try again\n")
-                continue
-            probabilities[symbol] = probability
-            total_prob += probability
-            break
-            
-    if total_prob != 1.0:
-        print("Error! , Sum of Probabilities must be 1. Now Sum of probabilities = " + total_prob 
-            + "\nTry again and Enter correct Probabilities")
+
+    for symbol in data:
+        probabilities[symbol] = probabilities.get(symbol, 0) + 1
+
+    # Normalize frequencies to probabilities
+    probabilities = {symbol: freq / total_symbols for symbol, freq in probabilities.items()}
+
+    # Verify probabilities sum up to 1.0 (optional, as normalization ensures this)
+    total_prob = sum(probabilities.values())
+    if not abs(total_prob - 1.0) < 1e-9:
+        raise ValueError("Error in calculating probabilities. Sum does not equal 1.0.")
+
+    print("Calculated Probabilities:", probabilities)
     return probabilities
 
 
+
 def calculateRange(probabilities):
-                    
+
     Ranges = {}
-    
+
     newProb = 0.0
     # claculate ranges for each symbol
     for symbol, prob in probabilities.items():
-        lowRange = newProb 
+        lowRange = newProb
         highRange = newProb + prob
         # store Ranges
         Ranges[symbol] = (lowRange , highRange)
-        
+
         # Update probability for the next symbol
         newProb = highRange
-        
+
     return Ranges
 
 def compressFloatingPoint(data , probabilities):
-    
-    # calculate ranges 
+
+    # calculate ranges
     ranges = calculateRange(probabilities)
-    
+
     lower = 0.0
     upper = 1.0
-    
+
     for symbol in data:
-        # Initialize Ranges 
+        # Initialize Ranges
         lowRange, highRange = ranges[symbol]
         # for check the range calculated correct
         print(f"Symbol: {symbol}, lowRange: {lowRange:.4f}, highRange: {highRange:.4f} ")
@@ -64,10 +62,10 @@ def compressFloatingPoint(data , probabilities):
         lower = lower + rangeWidth * lowRange
         # for check the range calculated correct
         print(f"Symbol: {symbol}, Lower: {lower:.4f}, Upper: {upper:.4f} ")
-    
+
     # chooce value from final range
     compressedData = (upper + lower) / 2
-    
+
     return compressedData
 
 def decompressFloatingPoint(Code,probabilities,length):
@@ -99,11 +97,11 @@ def decompressFloatingPoint(Code,probabilities,length):
 # Testing Function
 
 def runAlgorithm():
-    
+
     inputData = input("Enter Data to Compressed it: ").strip()
-    
+
     probabilities = getProbabilities(inputData)
-    
+
 
     compressedData = compressFloatingPoint(inputData , probabilities)
 
